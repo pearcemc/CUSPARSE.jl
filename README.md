@@ -229,7 +229,7 @@ d_C = CUSPARSE.geam(alpha, d_A, beta, d_B, 'O', 'O', 'O')
 # bring the result back to the CPU
 C = CUSPARSE.to_host(d_C)
 
-# observe a zero matrix
+# observe zero matrix
 alpha*A + beta*B - C
 ```
 
