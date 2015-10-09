@@ -204,10 +204,15 @@ A simple example of creating two sparse matrices `A`,`B` on the CPU, moving them
 
 ```julia
 using CUSPARSE
-   
+
+# dimensions and fill proportion
+N = 20
+M = 10
+p = 0.1
+
 # create matrices A,B on the CPU 
-A = sprand(10,8,0.3)
-B = sprand(8,20,0.4)
+A = sprand(N,M,p)
+B = sprand(N,M,p)
 
 # convert A,B to CSR format and
 # move them to the GPU - one step
@@ -219,10 +224,13 @@ alpha = rand()
 beta  = rand()
 
 # perform alpha * A + beta * B
-d_C = CUSPARSE.geam(alpha, d_A, beta, d_B, 'O', 'O')
+d_C = CUSPARSE.geam(alpha, d_A, beta, d_B, 'O', 'O', 'O')
 
 # bring the result back to the CPU
-C = to_host(d_C)
+C = CUSPARSE.to_host(d_C)
+
+# observe zero
+alpha*A + beta*B - C
 ```
 
 Some questions you might have:
